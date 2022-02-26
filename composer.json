@@ -1,0 +1,24 @@
+{
+    "name": "packagit/component-common",
+    "description": "",
+    "authors": [
+        {
+            "name": "Yin Qisen",
+            "email": "v@yinqisen.cn"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Package\\Component\\Common\\Providers\\CommonServiceProvider"
+            ],
+            "aliases": {
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Package\\Component\\Common\\": ""
+        }
+    }
+}
