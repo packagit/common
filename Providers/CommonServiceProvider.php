@@ -2,8 +2,10 @@
 
 namespace Package\Component\Common\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\ServiceProvider;
 
 class CommonServiceProvider extends ServiceProvider
 {
@@ -28,6 +30,7 @@ class CommonServiceProvider extends ServiceProvider
         $this->registerConfig();
         $this->registerViews();
         $this->loadMigrationsFrom(dirname(__DIR__) . '/Database/Migrations');
+        $this->registerResponseMacro();
     }
 
     /**
@@ -46,6 +49,31 @@ class CommonServiceProvider extends ServiceProvider
         }
     }
 
+    public function registerResponseMacro()
+    {
+        Response::macro('success', function ($data = [], $message = 'success', $errorCode = 0) {
+            return Response::json([
+                'error_code' => $errorCode,
+                'message'    => $message,
+                'data'       => $data,
+            ]);
+        });
+
+        Response::macro('error', function ($message = '', $errorCode = 1000, $data = []) {
+            $body = [
+                'error_code' => $errorCode,
+                'message'    => $message,
+                'data'       => $data,
+            ];
+
+            if (empty($data)) {
+                unset($body['data']);
+            }
+
+            return Response::json($body, 400);
+        });
+    }
+
     /**
      * Register config.
      *
@@ -54,9 +82,9 @@ class CommonServiceProvider extends ServiceProvider
     protected function registerConfig()
     {
         // uncomment when you need publish package config
-//        $this->publishes([
-//            dirname(__DIR__) . '/Config/config.php' => config_path($this->moduleNameLower . '.php'),
-//        ], 'config');
+        //        $this->publishes([
+        //            dirname(__DIR__) . '/Config/config.php' => config_path($this->moduleNameLower . '.php'),
+        //        ], 'config');
 
         $this->mergeConfigFrom(
             dirname(__DIR__) . '/Config/config.php',
@@ -85,11 +113,12 @@ class CommonServiceProvider extends ServiceProvider
     private function getPublishableViewPaths(): array
     {
         $paths = [];
-        foreach (\Config::get('view.paths') as $path) {
+        foreach (Config::get('view.paths') as $path) {
             if (is_dir($path . '/modules/' . $this->moduleNameLower)) {
                 $paths[] = $path . '/modules/' . $this->moduleNameLower;
             }
         }
+
         return $paths;
     }
 
