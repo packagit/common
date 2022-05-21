@@ -8,19 +8,18 @@ class ResponseMacroTest extends TestCase
 {
     public function testResponseMacro()
     {
-        $response = response()->success();
+        $response = response()->ok();
         $this->assertEquals(200, $response->getStatusCode());
 
         $x = json_decode($response->getContent(), true);
         $this->assertEquals(0, $x['error_code']);
         $this->assertEquals('success', $x['message']);
-        $this->assertEquals([], $x['data']);
 
-        $response = response()->success(['a'], 'b', 1);
+        $response = response()->ok('a', 1, ['b']);
         $x = json_decode($response->getContent(), true);
         $this->assertEquals(1, $x['error_code']);
-        $this->assertEquals('b', $x['message']);
-        $this->assertEquals(['a'], $x['data']);
+        $this->assertEquals('a', $x['message']);
+        $this->assertEquals(['b'], $x['data']);
     }
 
     public function testResponseMacroError()

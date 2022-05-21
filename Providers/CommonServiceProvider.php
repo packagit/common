@@ -52,14 +52,14 @@ class CommonServiceProvider extends ServiceProvider
 
     public function registerResponseMacro()
     {
-        Response::macro('ok', function ($message, $errCode = 0, $data = []) {
+        Response::macro('ok', function ($message = 'success', $errCode = 0, $attachData = []) {
             return app(BaseController::class)
-                ->ok($message, $errCode, $data);
+                ->ok($message, $errCode, $attachData);
         });
 
-        Response::macro('error', function ($message, $errCode = 1000, $data = null) {
+        Response::macro('error', function ($message = 'error', $errCode = 1000, $attachData = []) {
             return app(BaseController::class)
-                ->error($message, $errCode, $data);
+                ->error($message, $errCode, $attachData);
         });
     }
 
