@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\ServiceProvider;
+use Package\Component\Common\Http\Controllers\BaseController;
 
 class CommonServiceProvider extends ServiceProvider
 {
@@ -51,26 +52,14 @@ class CommonServiceProvider extends ServiceProvider
 
     public function registerResponseMacro()
     {
-        Response::macro('success', function ($data = [], $message = 'success', $errorCode = 0) {
-            return Response::json([
-                'error_code' => $errorCode,
-                'message'    => $message,
-                'data'       => $data,
-            ]);
+        Response::macro('ok', function ($message, $errCode = 0, $data = []) {
+            return app(BaseController::class)
+                ->ok($message, $errCode, $data);
         });
 
-        Response::macro('error', function ($message = '', $errorCode = 1000, $data = []) {
-            $body = [
-                'error_code' => $errorCode,
-                'message'    => $message,
-                'data'       => $data,
-            ];
-
-            if (empty($data)) {
-                unset($body['data']);
-            }
-
-            return Response::json($body, 400);
+        Response::macro('error', function ($message, $errCode = 1000, $data = null) {
+            return app(BaseController::class)
+                ->error($message, $errCode, $data);
         });
     }
 
