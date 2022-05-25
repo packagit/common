@@ -1,6 +1,6 @@
 <?php
 
-namespace Package\Component\Common;
+namespace Packagit\Common;
 
 class AppHelper
 {

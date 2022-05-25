@@ -10,7 +10,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Package\\Component\\Common\\Providers\\CommonServiceProvider"
+                "Packagit\\Common\\Providers\\CommonServiceProvider"
             ],
             "aliases": {
             }
@@ -18,7 +18,14 @@
     },
     "autoload": {
         "psr-4": {
-            "Package\\Component\\Common\\": ""
+            "Packagit\\Common\\": "src",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
         }
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Package\Component\Common\Http\Requests;
+namespace Packagit\Common\Http\Requests;
 
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;

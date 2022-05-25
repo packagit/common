@@ -1,12 +1,11 @@
 <?php
 
-namespace Package\Component\Common\Providers;
+namespace Packagit\Common\Providers;
 
-use Illuminate\Database\Eloquent\Factory;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Response;
 use Illuminate\Support\ServiceProvider;
-use Package\Component\Common\Http\Controllers\BaseController;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Database\Eloquent\Factory;
+use Packagit\Common\Http\Controllers\BaseController;
 
 class CommonServiceProvider extends ServiceProvider
 {
@@ -30,7 +29,7 @@ class CommonServiceProvider extends ServiceProvider
         $this->registerTranslations();
         $this->registerConfig();
         $this->registerViews();
-        $this->loadMigrationsFrom(dirname(__DIR__) . '/Database/Migrations');
+        $this->loadMigrationsFrom(dirname(__DIR__, 2) . '/database/migrations');
         $this->registerResponseMacro();
     }
 
@@ -41,13 +40,7 @@ class CommonServiceProvider extends ServiceProvider
      */
     public function registerTranslations()
     {
-        $langPath = resource_path('lang/modules/' . $this->moduleNameLower);
-
-        if (is_dir($langPath)) {
-            $this->loadTranslationsFrom($langPath, $this->moduleNameLower);
-        } else {
-            $this->loadTranslationsFrom(dirname(__DIR__) . '/Resources/lang', $this->moduleNameLower);
-        }
+        $this->loadTranslationsFrom(dirname(__DIR__, 2) . '/resources/lang', $this->moduleNameLower);
     }
 
     public function registerResponseMacro()
@@ -70,14 +63,8 @@ class CommonServiceProvider extends ServiceProvider
      */
     protected function registerConfig()
     {
-        // uncomment when you need publish package config
-        //        $this->publishes([
-        //            dirname(__DIR__) . '/Config/config.php' => config_path($this->moduleNameLower . '.php'),
-        //        ], 'config');
-
         $this->mergeConfigFrom(
-            dirname(__DIR__) . '/Config/config.php',
-            $this->moduleNameLower
+            dirname(__DIR__, 2) . '/config/config.php', $this->moduleNameLower
         );
     }
 
@@ -88,27 +75,7 @@ class CommonServiceProvider extends ServiceProvider
      */
     public function registerViews()
     {
-        $viewPath = resource_path('views/modules/' . $this->moduleNameLower);
-
-        $sourcePath = dirname(__DIR__) . '/Resources/views';
-
-        $this->publishes([
-            $sourcePath => $viewPath,
-        ], ['views', $this->moduleNameLower . '-module-views']);
-
-        $this->loadViewsFrom(array_merge($this->getPublishableViewPaths(), [$sourcePath]), $this->moduleNameLower);
-    }
-
-    private function getPublishableViewPaths(): array
-    {
-        $paths = [];
-        foreach (Config::get('view.paths') as $path) {
-            if (is_dir($path . '/modules/' . $this->moduleNameLower)) {
-                $paths[] = $path . '/modules/' . $this->moduleNameLower;
-            }
-        }
-
-        return $paths;
+        $this->loadViewsFrom(dirname(__DIR__, 2) . '/resource/views', $this->moduleNameLower);
     }
 
     /**
