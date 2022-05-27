@@ -27,8 +27,8 @@ composer require packagit/component-common
 composer test
 ```
 
-### How to make this package
+### How to create this package
 
-`php artisan package:make Common`
+`packagit new Components/Common`
 
-Please see [package-make](https://github.com/zencodex/package-make) for more information.
+Please see [packagit](https://github.com/packagit/packagit) for more information.

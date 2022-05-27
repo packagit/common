@@ -7,6 +7,9 @@
             "email": "v@yinqisen.cn"
         }
     ],
+    "require": {
+        "encore/laravel-admin": "^1.8"
+    },
     "extra": {
         "laravel": {
             "providers": [
@@ -19,13 +22,13 @@
     "autoload": {
         "psr-4": {
             "Packagit\\Common\\": "src",
-            "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/"
+            "Packagit\\Common\\Database\\Factories\\": "database/factories/",
+            "Packagit\\Common\\Database\\Seeders\\": "database/seeders/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
+            "Packagit\\Common\\Tests\\": "tests/"
         }
     }
 }

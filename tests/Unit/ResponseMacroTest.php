@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Packagit\Common\Tests\Unit;
 
 use Tests\TestCase;
 
