@@ -11,11 +11,14 @@ class AppHelper
      */
     public static function getAppId()
     {
-        $headers = getallheaders();
         $appId = '';
+        $headers = [];
+        if (request()->headers) {
+            $headers = request()->headers->all();
+        }
 
-        if (isset($headers['Referer'])) {
-            $refererArray = explode('/', $headers['Referer']);
+        if (isset($headers['referer'])) {
+            $refererArray = explode('/', $headers['referer'][0]);
 
             // Referer like this:
             // https://app.example.com/wx111f724ce24c500/app/page-frame.html
@@ -28,7 +31,7 @@ class AppHelper
 
         // header 读取 appid
         if (!$appId) {
-            $appId = $headers['appid'] ?? '';
+            $appId = $headers['appid'][0] ?? '';
         }
 
         // cookie 读取 appid
@@ -38,7 +41,7 @@ class AppHelper
 
         // request url 读取 appid
         if (!$appId) {
-            $appId = (string)request('appid');
+            $appId = (string)request()->get('appid');
         }
 
         return $appId;

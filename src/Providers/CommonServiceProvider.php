@@ -86,7 +86,9 @@ class CommonServiceProvider extends ServiceProvider
     public function register()
     {
         // $this->app->register(RouteServiceProvider::class);
-        $this->app->register(CommandServiceProvider::class);
+        if ($this->app->runningInConsole()) {
+            $this->app->register(CommandServiceProvider::class);
+        }
     }
 
     /**
